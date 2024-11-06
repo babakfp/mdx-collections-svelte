@@ -2,7 +2,7 @@ import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
 import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
 
-const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
+export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     const entries: CollectionEntry[] = []
 
     for (const [path, value] of Object.entries(pages)) {
@@ -45,7 +45,7 @@ const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
 /**
  * @returns The resolved value of an entry with frontmatter.
  */
-const getGlobEntryValue = <T extends z.ZodRawShape>(
+export const getGlobEntryValue = <T extends z.ZodRawShape>(
     entry: CollectionEntry,
     schema?: z.ZodObject<T>,
 ) => {

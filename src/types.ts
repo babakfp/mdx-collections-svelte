@@ -1,7 +1,7 @@
 import type { Data } from "mdx-svelte"
 import type { Component } from "svelte"
 
-type ImportGlobMarkdown = {
+export type ImportGlobMarkdown = {
     default: Component
     mdx: Data
     frontmatter?: Data["frontmatter"]
