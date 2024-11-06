@@ -1,6 +1,7 @@
 import {
     getCollectionEntries,
     useCollections,
+    useTypedCollections,
     z,
     type ImportGlobMarkdownMap,
 } from "../src"
@@ -71,3 +72,21 @@ const productsEntries2 = collections.getEntries(
 
 console.log(postEntries2[0].frontmatter)
 console.log(productsEntries2[0].frontmatter)
+
+// ---
+
+const collections2 = useTypedCollections(pages, {
+    posts: z.object({
+        title: z.string(),
+    }),
+    products: z.object({
+        title: z.string(),
+        price: z.number(),
+    }),
+})
+
+const postEntries3 = collections2.getEntries("posts")
+const productsEntries3 = collections2.getEntries("products")
+
+console.log(postEntries3[0].frontmatter)
+console.log(productsEntries3[0].frontmatter)

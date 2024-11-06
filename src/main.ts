@@ -123,3 +123,34 @@ export const useCollections = (pages: ImportGlobMarkdownMap) => {
         getEntry,
     }
 }
+
+export const useTypedCollections = <
+    K extends { [name: string]: ZodLooseObject },
+>(
+    pages: ImportGlobMarkdownMap,
+    collections: K,
+) => {
+    type CollectionEntriesResult<C extends keyof K> = ReturnType<
+        typeof getCollectionEntries<K[C]>
+    >
+
+    const getEntries = <C extends keyof K>(
+        name: C,
+    ): CollectionEntriesResult<C> =>
+        getCollectionEntries(pages, name as string, collections[name])
+
+    type CollectionEntryResult<C extends keyof K> = ReturnType<
+        typeof getCollectionEntry<K[C]>
+    >
+
+    const getEntry = <C extends keyof K>(
+        name: C,
+        slug: string,
+    ): CollectionEntryResult<C> =>
+        getCollectionEntry(pages, name as string, slug, collections[name])
+
+    return {
+        getEntries,
+        getEntry,
+    }
+}
