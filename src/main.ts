@@ -117,3 +117,25 @@ export const getCollectionEntry = <T extends z.ZodRawShape>(
         return getGlobEntryValue<T>(entry, schema)
     }
 }
+
+export const useCollections = (pages: ImportGlobMarkdownMap) => {
+    const getEntries = <T extends z.ZodRawShape>(
+        name: string,
+        schema?: z.ZodObject<T>,
+    ) => {
+        return getCollectionEntries(pages, name, schema)
+    }
+
+    const getEntry = <T extends z.ZodRawShape>(
+        name: string,
+        slug: string,
+        schema?: z.ZodObject<T>,
+    ) => {
+        return getCollectionEntry(pages, name, slug, schema)
+    }
+
+    return {
+        getEntries,
+        getEntry,
+    }
+}
