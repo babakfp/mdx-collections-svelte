@@ -2,7 +2,7 @@ import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
 import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
 
-const markdownFilesToEntries = (pages: ImportGlobMarkdownMap = {}) => {
+const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     const entries: CollectionEntry[] = []
 
     for (const [path, value] of Object.entries(pages)) {
@@ -79,10 +79,11 @@ const getGlobEntryValue = <T extends z.ZodRawShape>(
  * @param name - The name of the collection.
  */
 export const getCollectionEntries = <T extends z.ZodRawShape>(
+    pages: ImportGlobMarkdownMap,
     name: string,
     schema?: z.ZodObject<T>,
 ) => {
-    const entries = markdownFilesToEntries()
+    const entries = markdownFilesToEntries(pages)
 
     const collectionEntries = entries.filter((page) => page.collection === name)
 
@@ -99,11 +100,12 @@ export const getCollectionEntries = <T extends z.ZodRawShape>(
  * @param slug - The name of the markdown file without the suffix (`.md`).
  */
 export const getCollectionEntry = <T extends z.ZodRawShape>(
+    pages: ImportGlobMarkdownMap,
     name: string,
     slug: string,
     schema?: z.ZodObject<T>,
 ) => {
-    const entries = markdownFilesToEntries()
+    const entries = markdownFilesToEntries(pages)
     const collectionEntries = entries.filter(
         (entry) => entry.collection === name,
     )
