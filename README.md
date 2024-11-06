@@ -10,10 +10,13 @@ TODO
 
 ## Example
 
-TODO
+`collections.ts`:
 
 ```ts
-import type { ImportGlobMarkdownMap } from "mdx-collections-svelte"
+import {
+    useCollections,
+    type ImportGlobMarkdownMap,
+} from "mdx-collections-svelte"
 
 /**
  * All markdown content pages.
@@ -22,7 +25,7 @@ import type { ImportGlobMarkdownMap } from "mdx-collections-svelte"
  *
  * [Glob Import](https://vitejs.dev/guide/features.html#glob-import).
  */
-const pages = import.meta.glob(
+export const pages = import.meta.glob(
     [
         "/src/content/*/**/*.md",
         "!/src/content/*/**/_*/*.md",
@@ -30,4 +33,39 @@ const pages = import.meta.glob(
     ],
     { eager: true },
 ) satisfies ImportGlobMarkdownMap
+
+export const collections = useCollections(pages)
+```
+
+`getPosts.ts`:
+
+```ts
+import { collections } from "mdx-collections-svelte"
+
+export const getPosts = async () => {
+    const entries = collections.getEntries("posts")
+
+    const posts = entries
+        // Only get root pages.
+        .filter((entry) => entry.slug.split("/").length === 1)
+        // Sort by update date.
+        .sort(
+            (first, second) =>
+                new Date(second.frontmatter.update).getTime() -
+                new Date(first.frontmatter.update).getTime(),
+        )
+
+    return posts
+}
+```
+
+`posts/+page.ts`:
+
+```ts
+import { getPosts } from "getPosts.js"
+
+export const load = async () => {
+    const posts = await getPosts()
+    return { posts }
+}
 ```
