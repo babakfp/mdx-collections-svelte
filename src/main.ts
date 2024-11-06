@@ -2,6 +2,8 @@ import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
 import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
 
+type ZodLooseObject = z.ZodObject<z.ZodRawShape>
+
 export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     const entries: CollectionEntry[] = []
 
@@ -42,25 +44,11 @@ export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     return entries
 }
 
-/**
- * @returns The resolved value of an entry with frontmatter.
- */
-export const getGlobEntryValue = <T extends z.ZodRawShape>(
+export const parseFrontmatter = <TSchema extends ZodLooseObject>(
     entry: CollectionEntry,
-    schema?: z.ZodObject<T>,
+    schema: TSchema,
 ) => {
-    const validateFrontmatter = () => {
-        if (schema) {
-            return schema.parse(entry.frontmatter)
-        }
-
-        return {}
-    }
-
-    const frontmatter = {
-        ...(validateFrontmatter() as z.infer<z.ZodObject<T>>),
-        ...entry.frontmatter,
-    }
+    const frontmatterOutput: z.output<TSchema> = schema.parse(entry.frontmatter)
 
     return {
         collection: entry.collection,
@@ -69,7 +57,7 @@ export const getGlobEntryValue = <T extends z.ZodRawShape>(
         slug: entry.slug,
         default: entry.default,
         mdx: entry.mdx,
-        frontmatter,
+        frontmatter: frontmatterOutput,
         href: entry.href,
     } satisfies CollectionEntry
 }
@@ -78,17 +66,17 @@ export const getGlobEntryValue = <T extends z.ZodRawShape>(
  * Gets all markdown entries of the specific collection.
  * @param name - The name of the collection.
  */
-export const getCollectionEntries = <T extends z.ZodRawShape>(
+export const getCollectionEntries = <TSchema extends ZodLooseObject>(
     pages: ImportGlobMarkdownMap,
     name: string,
-    schema?: z.ZodObject<T>,
+    schema: TSchema,
 ) => {
     const entries = markdownFilesToEntries(pages)
 
     const collectionEntries = entries.filter((page) => page.collection === name)
 
     const result = collectionEntries.map((entry) =>
-        getGlobEntryValue<T>(entry, schema),
+        parseFrontmatter<TSchema>(entry, schema),
     )
 
     return result
@@ -99,11 +87,11 @@ export const getCollectionEntries = <T extends z.ZodRawShape>(
  * @param name - The name of the collection.
  * @param slug - The name of the markdown file without the suffix (`.md`).
  */
-export const getCollectionEntry = <T extends z.ZodRawShape>(
+export const getCollectionEntry = <TSchema extends ZodLooseObject>(
     pages: ImportGlobMarkdownMap,
     name: string,
     slug: string,
-    schema?: z.ZodObject<T>,
+    schema: TSchema,
 ) => {
     const entries = markdownFilesToEntries(pages)
     const collectionEntries = entries.filter(
@@ -114,21 +102,21 @@ export const getCollectionEntry = <T extends z.ZodRawShape>(
     )[0]
 
     if (entry) {
-        return getGlobEntryValue<T>(entry, schema)
+        return parseFrontmatter<TSchema>(entry, schema)
     }
 }
 
 export const useCollections = (pages: ImportGlobMarkdownMap) => {
-    const getEntries = <T extends z.ZodRawShape>(
+    const getEntries = <ZSchema extends ZodLooseObject>(
         name: string,
-        schema?: z.ZodObject<T>,
-    ) => getCollectionEntries<T>(pages, name, schema)
+        schema: ZSchema,
+    ) => getCollectionEntries(pages, name, schema)
 
-    const getEntry = <T extends z.ZodRawShape>(
+    const getEntry = <ZSchema extends ZodLooseObject>(
         name: string,
         slug: string,
-        schema?: z.ZodObject<T>,
-    ) => getCollectionEntry<T>(pages, name, slug, schema)
+        schema: ZSchema,
+    ) => getCollectionEntry(pages, name, slug, schema)
 
     return {
         getEntries,
