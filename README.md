@@ -4,7 +4,6 @@
 
 An easy way to create collections of markdown pages in SvelteKit.
 
--   📕 [Documentation](https://babakfp.ir/docs/mdx-collections-svelte)
 -   🪵 [CHANGELOG](https://github.com/babakfp/mdx-collections-svelte/blob/main/CHANGELOG.md)
 -   📦 [NPM](https://npmjs.com/package/mdx-collections-svelte)
 
@@ -37,6 +36,8 @@ export const pages = import.meta.glob(
 export const collections = useCollections(pages)
 ```
 
+### Get all posts
+
 `getPosts.ts`:
 
 ```ts
@@ -68,4 +69,10 @@ export const load = async () => {
     const posts = await getPosts()
     return { posts }
 }
+```
+
+### Get post by slug
+
+```ts
+collections.getEntry("posts", "my-post") // src/content/posts/my-post.md
 ```
