@@ -90,3 +90,4 @@ const productsEntries3 = collections2.getEntries("products")
 
 console.log(postEntries3[0].frontmatter)
 console.log(productsEntries3[0].frontmatter)
+console.log(productsEntries3[0].mdx.frontmatter)

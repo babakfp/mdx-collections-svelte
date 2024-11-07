@@ -1,3 +1,4 @@
+import type { Data } from "mdx-svelte"
 import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
 import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
@@ -50,13 +51,20 @@ export const parseFrontmatter = <TSchema extends ZodLooseObject>(
 ) => {
     const frontmatterOutput: z.output<TSchema> = schema.parse(entry.frontmatter)
 
+    const mdxOutput: Data & {
+        frontmatter: z.output<TSchema>
+    } = {
+        ...entry.mdx,
+        frontmatter: frontmatterOutput,
+    }
+
     return {
         collection: entry.collection,
         path: entry.path,
         file: entry.file,
         slug: entry.slug,
         default: entry.default,
-        mdx: entry.mdx,
+        mdx: mdxOutput,
         frontmatter: frontmatterOutput,
         href: entry.href,
     } satisfies CollectionEntry
