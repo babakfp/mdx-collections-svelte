@@ -139,19 +139,10 @@ export const useTypedCollections = <
     collections: K,
 ) => {
     const getEntries = <C extends keyof K>(name: C) =>
-        getCollectionEntries(
-            pages,
-            name as string,
-            collections[name],
-        ) as ReturnType<typeof getCollectionEntries<K[C]>>
+        getCollectionEntries<K[C]>(pages, name as string, collections[name])
 
     const getEntry = <C extends keyof K>(name: C, slug: string) =>
-        getCollectionEntry(
-            pages,
-            name as string,
-            slug,
-            collections[name],
-        ) as ReturnType<typeof getCollectionEntry<K[C]>>
+        getCollectionEntry<K[C]>(pages, name as string, slug, collections[name])
 
     return {
         getEntries,
