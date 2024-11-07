@@ -138,24 +138,20 @@ export const useTypedCollections = <
     pages: ImportGlobMarkdownMap,
     collections: K,
 ) => {
-    type CollectionEntriesResult<C extends keyof K> = ReturnType<
-        typeof getCollectionEntries<K[C]>
-    >
+    const getEntries = <C extends keyof K>(name: C) =>
+        getCollectionEntries(
+            pages,
+            name as string,
+            collections[name],
+        ) as ReturnType<typeof getCollectionEntries<K[C]>>
 
-    const getEntries = <C extends keyof K>(
-        name: C,
-    ): CollectionEntriesResult<C> =>
-        getCollectionEntries(pages, name as string, collections[name])
-
-    type CollectionEntryResult<C extends keyof K> = ReturnType<
-        typeof getCollectionEntry<K[C]>
-    >
-
-    const getEntry = <C extends keyof K>(
-        name: C,
-        slug: string,
-    ): CollectionEntryResult<C> =>
-        getCollectionEntry(pages, name as string, slug, collections[name])
+    const getEntry = <C extends keyof K>(name: C, slug: string) =>
+        getCollectionEntry(
+            pages,
+            name as string,
+            slug,
+            collections[name],
+        ) as ReturnType<typeof getCollectionEntry<K[C]>>
 
     return {
         getEntries,
