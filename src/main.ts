@@ -34,10 +34,14 @@ export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     }
 
     entries.forEach((entry) => {
-        const sameSlugEntries = entries.filter((e) => e.slug === entry.slug)
-        if (sameSlugEntries.length > 1) {
+        const sameHrefEntries = entries.filter((e) => e.href === entry.href)
+        if (sameHrefEntries.length > 1) {
             throw new Error(
-                `Conflicting routes found:\n${sameSlugEntries.map((e) => `    .${e.path}`).join("\n")}\nOne must be removed.`,
+                [
+                    "Conflicting routes found:",
+                    ...sameHrefEntries.map((e) => `    .${e.path}`),
+                    "One must be removed.",
+                ].join("\n"),
             )
         }
     })
