@@ -9,70 +9,63 @@ An easy way to create collections of markdown pages in SvelteKit.
 
 ## Example
 
-`collections.ts`:
+`$lib/collections.ts`:
 
 ```ts
 import {
-    useCollections,
+    useTypedCollections,
     type ImportGlobMarkdownMap,
 } from "mdx-collections-svelte"
+import { z } from "mdx-collections-svelte/zod"
 
 /**
- * All markdown content pages.
+ * All markdown pages.
  *
  * Paths that contain (`_`) in their name are ignored to avoid conflict between pages and components.
  *
- * [Glob Import](https://vitejs.dev/guide/features.html#glob-import).
+ * [Glob Import](https://vite.dev/guide/features.html#glob-import).
  */
 export const pages = import.meta.glob(
     [
         "/src/content/*/**/*.md",
-        "!/src/content/*/**/_*/*.md",
-        "!/src/content/*/**/_*.md",
+        "!/src/content/*/**/_*/*.md", // ignored
+        "!/src/content/*/**/_*.md", // ignored
     ],
     { eager: true },
 ) satisfies ImportGlobMarkdownMap
 
-export const collections = useCollections(pages)
-```
+const postsSchema = z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+})
 
-### Get all posts
+const productsSchema = z.object({
+    title: z.string().min(1),
+    price: z.number().min(1),
+})
 
-`getPosts.ts`:
-
-```ts
-import { collections } from "mdx-collections-svelte"
-
-export const getPosts = async () => {
-    const entries = collections.getEntries("posts")
-
-    const posts = entries
-        // Only get root pages.
-        .filter((entry) => entry.slug.split("/").length === 1)
-        // Sort by update date.
-        .sort(
-            (first, second) =>
-                new Date(second.frontmatter.update).getTime() -
-                new Date(first.frontmatter.update).getTime(),
-        )
-
-    return posts
-}
+export const collections = useTypedCollections(pages, {
+    posts: postsSchema,
+    products: productsSchema,
+})
 ```
 
 `posts/+page.ts`:
 
 ```ts
-import { getPosts } from "getPosts.js"
+import { collections } from "$lib/collections.js"
 
 export const load = async () => {
-    const posts = await getPosts()
-    return { posts }
+    const allPosts = collections.getEntries("posts") // You'll get type suggestions.
+    const helloWorldPost = collections.getEntry("hello-world") // You'll get type suggestions.
+    return { allPosts, helloWorldPost }
 }
 ```
 
-### Get post by slug
+### Empty frontmatter
+
+Use this schema if you don't use frontmatter for a collection.
 
 ```ts
-collections.getEntry("posts", "my-post") // src/content/posts/my-post.md
+z.object({}).default({})
 ```

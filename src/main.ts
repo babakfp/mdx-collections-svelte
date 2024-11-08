@@ -11,6 +11,7 @@ export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     const entries: CollectionEntry[] = []
 
     for (const [path, value] of Object.entries(pages)) {
+        // TODO: Allow custom path prefix. Or maybe can solve this in a different way.
         const segments = path.replace("/src/content/", "").split("/")
 
         const collection = segments[0]
