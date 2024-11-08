@@ -3,7 +3,7 @@ import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
 import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
 
-type ZodLooseObject =
+export type ZodLooseObject =
     | z.ZodObject<z.ZodRawShape>
     | z.ZodDefault<z.ZodObject<z.ZodRawShape>>
 
