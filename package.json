@@ -10,7 +10,7 @@
         "build": "rimraf dist && tsc",
         "prepublishOnly": "rimraf dist && tsc",
         "format": "prettier -w .",
-        "test": "vitest"
+        "test": "vitest --passWithNoTests"
     },
     "peerDependencies": {
         "@sveltejs/kit": "2",

@@ -1,10 +1,10 @@
+import { z } from "zod"
 import {
     getCollectionEntries,
     useCollections,
     useTypedCollections,
-    z,
     type ImportGlobMarkdownMap,
-} from "../src"
+} from "../src/index.js"
 
 const pages = {
     "/src/content/posts/hello-world.md": {
@@ -23,11 +23,20 @@ const pages = {
         mdx: {
             frontmatter: {
                 title: "Hello, World!",
+                price: 100,
             },
         },
         frontmatter: {
             title: "Hello, World!",
+            price: 100,
         },
+    },
+    "/src/content/portfolios/hello-world.md": {
+        default: undefined as any,
+        mdx: {
+            frontmatter: {},
+        },
+        frontmatter: {},
     },
 } satisfies ImportGlobMarkdownMap
 
@@ -83,11 +92,14 @@ const collections2 = useTypedCollections(pages, {
         title: z.string(),
         price: z.number(),
     }),
+    portfolios: z.object({}).default({}),
 })
 
 const postEntries3 = collections2.getEntries("posts")
 const productsEntries3 = collections2.getEntries("products")
+const portfoliosEntries3 = collections2.getEntries("portfolios")
 
 console.log(postEntries3[0].frontmatter)
 console.log(productsEntries3[0].frontmatter)
 console.log(productsEntries3[0].mdx.frontmatter)
+console.log(portfoliosEntries3[0].frontmatter)
