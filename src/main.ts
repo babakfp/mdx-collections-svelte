@@ -1,11 +1,11 @@
 import type { Data } from "mdx-svelte"
 import type { z } from "zod"
 import { collectionSchema, slugSegmentSchema } from "./schemas.js"
-import type { CollectionEntry, ImportGlobMarkdownMap } from "./types.js"
-
-export type ZodLooseObject =
-    | z.ZodObject<z.ZodRawShape>
-    | z.ZodDefault<z.ZodObject<z.ZodRawShape>>
+import type {
+    CollectionEntry,
+    ImportGlobMarkdownMap,
+    ZodLooseObject,
+} from "./types.js"
 
 export const markdownFilesToEntries = (pages: ImportGlobMarkdownMap) => {
     const entries: CollectionEntry[] = []

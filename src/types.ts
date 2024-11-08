@@ -1,5 +1,10 @@
 import type { Data } from "mdx-svelte"
 import type { Component } from "svelte"
+import type { z } from "zod"
+
+export type ZodLooseObject =
+    | z.ZodObject<z.ZodRawShape>
+    | z.ZodDefault<z.ZodObject<z.ZodRawShape>>
 
 export type ImportGlobMarkdown = {
     default: Component
