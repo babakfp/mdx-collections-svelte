@@ -35,7 +35,8 @@
         "./dist/"
     ],
     "exports": {
-        ".": "./dist/index.js"
+        ".": "./dist/index.js",
+        "./zod": "./dist/zod.js"
     },
     "keywords": [
         "svelte",
