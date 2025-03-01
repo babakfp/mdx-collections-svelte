@@ -1,6 +1,6 @@
 {
     "name": "mdx-collections-svelte",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "An easy way to create collections of markdown pages in SvelteKit.",
     "license": "MIT",
     "repository": "github:babakfp/mdx-collections-svelte",
@@ -14,7 +14,7 @@
     },
     "peerDependencies": {
         "@sveltejs/kit": "2",
-        "mdx-svelte": "4",
+        "mdx-svelte": "4 || 5",
         "svelte": "5"
     },
     "dependencies": {
