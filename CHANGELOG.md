@@ -1,3 +1,7 @@
+## 2.0.2
+
+-   feat: made compatible with mdx-svelte v6
+
 ## 2.0.0
 
 -   Feature: Added `useTypedCollections`. Better schema handling, less boilerplate and better type safety.
