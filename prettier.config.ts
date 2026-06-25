@@ -1,5 +1,5 @@
-import type { Config } from "prettier"
 import type { PluginConfig } from "@ianvs/prettier-plugin-sort-imports"
+import type { Config } from "prettier"
 
 export default {
     semi: false,

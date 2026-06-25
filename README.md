@@ -4,8 +4,8 @@
 
 An easy way to create collections of markdown pages in SvelteKit.
 
--   🪵 [CHANGELOG](https://github.com/babakfp/mdx-collections-svelte/blob/main/CHANGELOG.md)
--   📦 [NPM](https://npmjs.com/package/mdx-collections-svelte)
+- 🪵 [CHANGELOG](https://github.com/babakfp/mdx-collections-svelte/blob/main/CHANGELOG.md)
+- 📦 [NPM](https://npmjs.com/package/mdx-collections-svelte)
 
 ## Example
 
