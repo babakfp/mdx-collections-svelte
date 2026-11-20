@@ -9,7 +9,7 @@
         "dev": "pnpm rmDist && tsc -w",
         "build": "pnpm rmDist && tsc",
         "prepublishOnly": "pnpm rmDist && tsc",
-        "format": "prettier -w .",
+        "format": "prettier --log-level=warn -w .",
         "test": "vitest --passWithNoTests",
         "rmDist": "node -e \"require('fs').rmSync('./dist', { recursive: true, force: true })\""
     },
