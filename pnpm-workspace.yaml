@@ -1,5 +1,3 @@
-saveExact: true
-packageLock: false
 allowBuilds:
     "@sveltejs/kit": true
     esbuild: true
