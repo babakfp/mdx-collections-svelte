@@ -1,6 +1,10 @@
+## 2.1.0
+
+- feat: add SvelteKit 3 support.
+
 ## 2.0.2
 
-- feat: made compatible with mdx-svelte v6
+- feat: made compatible with mdx-svelte v6.
 
 ## 2.0.0
 
